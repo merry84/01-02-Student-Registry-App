@@ -22,5 +22,17 @@ jobs:
         cache: 'npm'
     - name: Install node modules
       run: npm install
-    - name: Execute nmp Install
-      run: npm test 
+
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build_test
+    if: github.ref == 'refs/heads/main'
+
+    steps:
+      - name: Deploy to Render
+        uses: johnbeynon/render-deploy-action@v0.0.8
+        with:
+          service-id: ${{ secrets.SERVERCE_ID }}
+          api-key: ${{ secrets.MY_RENDER_API_KEY }}
+       
